@@ -7,7 +7,7 @@ const config = {
 
 const client = new line.Client(config);
 
-// 簡單的記憶體紀錄點擊次數
+// 記憶體紀錄點擊次數
 const userClicks = new Map();
 
 module.exports = async (req, res) => {
@@ -31,19 +31,20 @@ async function handleEvent(event) {
     return Promise.resolve(null);
   }
 
-  if (event.message.text === '點擊累加') {
+  // 對應圖文選單發送的文字 "不要戳我~~"
+  if (event.message.text === '不要戳我~~') {
     const userId = event.source.userId;
     let count = userClicks.get(userId) || 0;
     count += 1;
     userClicks.set(userId, count);
 
     let replyText = '';
-    if (count === 1) {
-      replyText = '這是第 1 次點擊的回覆！';
-    } else if (count === 2) {
-      replyText = '這是第 2 次點擊的回覆！';
+    if (count <= 2) {
+      replyText = '不要戳我~~';
+    } else if (count === 3) {
+      replyText = '都說不要戳我了| ￣へ￣ |';
     } else {
-      replyText = `這是第 ${count} 次點擊的回覆！`;
+      replyText = '想打架嗎？';
     }
 
     return client.replyMessage(event.replyToken, {
