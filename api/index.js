@@ -1,4 +1,3 @@
-const express = require('express');
 const line = require('@line/bot-sdk');
 
 const config = {
@@ -7,26 +6,31 @@ const config = {
 };
 
 const client = new line.Client(config);
-const app = express();
 
-// 記憶體紀錄點擊次數 (注意：Vercel Serverless 重新冷啟動時次數會重置)
+// 簡單的記憶體紀錄點擊次數
 const userClicks = new Map();
 
-app.post('/webhook', line.middleware(config), (req, res) => {
-  Promise.all(req.body.events.map(handleEvent))
-    .then((result) => res.json(result))
-    .catch((err) => {
-      console.error(err);
-      res.status(500).end();
-    });
-});
+module.exports = async (req, res) => {
+  if (req.method !== 'POST') {
+    res.status(200).send('LINE Bot Server is running!');
+    return;
+  }
+
+  try {
+    const events = req.body.events;
+    await Promise.all(events.map(handleEvent));
+    res.status(200).json({ status: 'success' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).end();
+  }
+};
 
 async function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'text') {
     return Promise.resolve(null);
   }
 
-  // 假設圖文選單按鈕發送的文字是 "點擊累加"
   if (event.message.text === '點擊累加') {
     const userId = event.source.userId;
     let count = userClicks.get(userId) || 0;
@@ -50,5 +54,3 @@ async function handleEvent(event) {
 
   return Promise.resolve(null);
 }
-
-module.exports = app;
