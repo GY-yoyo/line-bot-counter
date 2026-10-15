@@ -67,7 +67,7 @@ module.exports = (req, res) => {
     <div id="wall">載入祝福中...</div>
 
     <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbxRyyntXyzS6UN56xRKXXMdF-PtG0FaxmDnA-IOjUXeXgbI6W9iZoCIU4hVkrJiquX38A/exec';
+        const API_URL = 'https://script.google.com/macros/s/AKfycby8vSo754ML70CP383nQ4rGJW7Tpod-f1ZOgnu09Y-ogE7erfY422XPIOwruLa4t-a-mQ/exec';
 
         async function fetchMessages() {
             try {
