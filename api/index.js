@@ -37,12 +37,13 @@ async function handleEvent(event) {
   const userMessage = event.message.text;
   const userId = event.source.userId;
 
-  // 1. 處理祝福留言功能（例如輸入：祝福：新婚快樂）
-  if (userMessage.startsWith('祝福：')) {
-    const wishContent = userMessage.replace('祝福：', '').trim();
+  // 1. 處理祝福留言功能（支援半形 # 或全形 ＃）
+  if (userMessage.startsWith('#') || userMessage.startsWith('＃')) {
+    // 把開頭的 # 或 ＃ 濾掉，取得後面的內容
+    const wishContent = userMessage.replace(/^[#＃]/, '').trim();
     
     // 取得使用者 LINE 顯示名稱
-    let displayName = '熱情賓客';
+    let displayName = '匿名家人';
     try {
       const profile = await client.getProfile(userId);
       displayName = profile.displayName;
