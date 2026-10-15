@@ -8,7 +8,7 @@ module.exports = (req, res) => {
     <title>❤️ 婚禮祝福留言牆 ❤️</title>
     <style>
         body {
-            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+            background: linear-gradient(135deg, #fce4ec 0%, #f8f4bb 100%);
             font-family: 'Microsoft JhengHei', sans-serif;
             margin: 0;
             padding: 40px;
