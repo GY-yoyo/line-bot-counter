@@ -10,6 +10,9 @@ const client = new line.Client(config);
 // 記憶體紀錄點擊次數
 const userClicks = new Map();
 
+// 您的 Google Apps Script 網頁應用程式網址
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxRyyntXyzS6UN56xRKXXMdF-PtG0FaxmDnA-IOjUXeXgbI6W9iZoCIU4hVkrJiquX38A/exec';
+
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     res.status(200).send('LINE Bot Server is running!');
@@ -31,9 +34,44 @@ async function handleEvent(event) {
     return Promise.resolve(null);
   }
 
-  // 對應圖文選單發送的文字 "不要戳我~~"
-  if (event.message.text === '不要戳我~~') {
-    const userId = event.source.userId;
+  const userMessage = event.message.text;
+  const userId = event.source.userId;
+
+  // 1. 處理祝福留言功能（例如輸入：祝福：新婚快樂）
+  if (userMessage.startsWith('祝福：')) {
+    const wishContent = userMessage.replace('祝福：', '').trim();
+    
+    // 取得使用者 LINE 顯示名稱
+    let displayName = '熱情賓客';
+    try {
+      const profile = await client.getProfile(userId);
+      displayName = profile.displayName;
+    } catch (e) {
+      console.error('無法取得使用者名稱', e);
+    }
+
+    // 將資料送到 Google 試算表
+    try {
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: displayName,
+          message: wishContent
+        })
+      });
+    } catch (e) {
+      console.error('寫入 Google 試算表失敗', e);
+    }
+
+    return client.replyMessage(event.replyToken, {
+      type: 'text',
+      text: `感謝 ${displayName} 的祝福！已成功送到大螢幕囉！🎉`
+    });
+  }
+
+  // 2. 原有的圖文選單點擊計數功能
+  if (userMessage === '不要戳我~~') {
     let count = userClicks.get(userId) || 0;
     count += 1;
     userClicks.set(userId, count);
@@ -44,7 +82,7 @@ async function handleEvent(event) {
     } else if (count === 3) {
       replyText = '都說不要戳我了| ￣へ￣ |';
     } else if (count === 4) {
-      replyText = '拜託不要戳我了嘛!!';
+      replyText = '拜託不要戳我了';
     } else {
       replyText = '來婚禮再戳本人';
     }
