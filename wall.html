@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>❤️ 佑佑班婚禮祝福留言牆 ❤️</title>
+    <style>
+        body {
+            background-color: #fce4ec;
+            font-family: 'Microsoft JhengHei', sans-serif;
+            margin: 0;
+            padding: 40px;
+            text-align: center;
+        }
+        h1 {
+            color: #d81b60;
+            font-size: 48px;
+            margin-bottom: 30px;
+        }
+        #wall {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 300px;
+            text-align: left;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .card .name {
+            font-weight: bold;
+            color: #c2185b;
+            font-size: 20px;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #f8bbd0;
+            padding-bottom: 5px;
+        }
+        .card .message {
+            color: #333;
+            font-size: 18px;
+            word-break: break-all;
+        }
+        .card .time {
+            color: #888;
+            font-size: 12px;
+            text-align: right;
+            margin-top: 15px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>💍 佑佑班祝福牆 💍</h1>
+    <div id="wall">載入祝福中...</div>
+
+    <script>
+        // 請將下面引號內的網址換成你的 Google Apps Script 網頁應用程式網址
+        const API_URL = 'https://script.google.com/macros/s/你的GoogleAppsScript網頁應用程式網址/exec';
+
+        async function fetchMessages() {
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+                
+                const wallDiv = document.getElementById('wall');
+                wallDiv.innerHTML = ''; // 清空原本的載入中文字
+
+                if (data.length === 0) {
+                    wallDiv.innerHTML = '<p>目前還沒有人留言，趕快用 LINE 發送「祝福：你的祝福內容」吧！</p>';
+                    return;
+                }
+
+                // 透過迴圈把每一筆祝福反轉（讓最新的顯示在最前面）並建立卡片
+                data.reverse().forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+
+                    // 格式化時間
+                    const timeStr = new Date(item.time).toLocaleString('zh-TW', {
+                        month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
+                    });
+
+                    card.innerHTML = `
+                        <div class="name">${escapeHtml(item.name)}</div>
+                        <div class="message">${escapeHtml(item.message)}</div>
+                        <div class="time">${timeStr}</div>
+                    `;
+                    wallDiv.appendChild(card);
+                });
+            } catch (error) {
+                console.error('取得留言失敗', error);
+                document.getElementById('wall').innerHTML = '<p>載入留言失敗，請檢查網路或 API 設定。</p>';
+            }
+        }
+
+        // 防止 HTML 注入的安全防護小工具
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        // 網頁剛打開時執行一次
+        fetchMessages();
+
+        // 每隔 5 秒自動重新整理一次資料（實現大螢幕即時更新）
+        setInterval(fetchMessages, 5000);
+    </script>
+</body>
+</html>
