@@ -92,7 +92,7 @@ module.exports = (req, res) => {
 </head>
 <body>
 
-    <h1>💍 甜蜜祝福牆 💍</h1>
+    <h1>💍 佑佑班祝福牆 💍</h1>
     <div id="wall">
         <div class="loading">💖 正在載入大家的祝福，請稍候... 💖</div>
     </div>
@@ -108,7 +108,7 @@ module.exports = (req, res) => {
                 const wallDiv = document.getElementById('wall');
                 
                 if (data.length === 0) {
-                    wallDiv.innerHTML = '<div class="loading">目前還沒有人留言，趕快用 LINE 發送「祝福：你的祝福內容」吧！</div>';
+                    wallDiv.innerHTML = '<div class="loading">目前還沒有人留言，趕快用 LINE 發送「＃你的祝福內容」吧！</div>';
                     return;
                 }
 
