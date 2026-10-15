@@ -44,7 +44,7 @@ async function handleEvent(event) {
     } else if (count === 3) {
       replyText = '都說不要戳我了| ￣へ￣ |';
     } else if (count === 4) {
-      replyText = '拜託不要戳我了';
+      replyText = '拜託不要戳我了嘛!!';
     } else {
       replyText = '來婚禮再戳本人';
     }
