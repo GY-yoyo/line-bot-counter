@@ -11,7 +11,7 @@ const client = new line.Client(config);
 const userClicks = new Map();
 
 // 您的 Google Apps Script 網頁應用程式網址
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxRyyntXyzS6UN56xRKXXMdF-PtG0FaxmDnA-IOjUXeXgbI6W9iZoCIU4hVkrJiquX38A/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby8vSo754ML70CP383nQ4rGJW7Tpod-f1ZOgnu09Y-ogE7erfY422XPIOwruLa4t-a-mQ/exec';
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
