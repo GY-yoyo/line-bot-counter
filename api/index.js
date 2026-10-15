@@ -43,8 +43,10 @@ async function handleEvent(event) {
       replyText = '不要戳我~~';
     } else if (count === 3) {
       replyText = '都說不要戳我了| ￣へ￣ |';
+    } else if (count === 4) {
+      replyText = '拜託不要戳我了';
     } else {
-      replyText = '想打架嗎？';
+      replyText = '來婚禮再戳本人';
     }
 
     return client.replyMessage(event.replyToken, {
