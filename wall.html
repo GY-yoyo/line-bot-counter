@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>❤️ 佑佑班婚禮祝福留言牆 ❤️</title>
+    <title>❤️ 婚禮祝福留言牆 ❤️</title>
     <style>
         body {
             background-color: #fce4ec;
@@ -60,11 +60,11 @@
 </head>
 <body>
 
-    <h1>💍 佑佑班祝福牆 💍</h1>
+    <h1>💍 甜蜜祝福牆 💍</h1>
     <div id="wall">載入祝福中...</div>
 
     <script>
-        // 請將下面引號內的網址換成你的 Google Apps Script 網頁應用程式網址
+        // 請確認這裡填入的是你自己的 Google Apps Script 網址
         const API_URL = 'https://script.google.com/macros/s/AKfycbxRyyntXyzS6UN56xRKXXMdF-PtG0FaxmDnA-IOjUXeXgbI6W9iZoCIU4hVkrJiquX38A/exec';
 
         async function fetchMessages() {
@@ -73,19 +73,17 @@
                 const data = await response.json();
                 
                 const wallDiv = document.getElementById('wall');
-                wallDiv.innerHTML = ''; // 清空原本的載入中文字
+                wallDiv.innerHTML = '';
 
                 if (data.length === 0) {
                     wallDiv.innerHTML = '<p>目前還沒有人留言，趕快用 LINE 發送「祝福：你的祝福內容」吧！</p>';
                     return;
                 }
 
-                // 透過迴圈把每一筆祝福反轉（讓最新的顯示在最前面）並建立卡片
                 data.reverse().forEach(item => {
                     const card = document.createElement('div');
                     card.className = 'card';
 
-                    // 格式化時間
                     const timeStr = new Date(item.time).toLocaleString('zh-TW', {
                         month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
                     });
@@ -103,16 +101,12 @@
             }
         }
 
-        // 防止 HTML 注入的安全防護小工具
         function escapeHtml(text) {
             if (!text) return '';
             return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
 
-        // 網頁剛打開時執行一次
         fetchMessages();
-
-        // 每隔 5 秒自動重新整理一次資料（實現大螢幕即時更新）
         setInterval(fetchMessages, 5000);
     </script>
 </body>
