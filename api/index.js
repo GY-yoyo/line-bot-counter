@@ -77,9 +77,9 @@ async function handleEvent(event) {
     count += 1;
     userClicks.set(userId, count);
 
-    let replyText = '';
+    let replyText = '我戳~~';
     if (count <= 2) {
-      replyText = '不要戳我~~';
+      replyText = '';
     } else if (count === 3) {
       replyText = '都說不要戳我了| ￣へ￣ |';
     } else if (count === 4) {
