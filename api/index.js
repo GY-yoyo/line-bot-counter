@@ -79,7 +79,7 @@ async function handleEvent(event) {
 
     let replyText = '不要戳我~~';
     if (count <= 2) {
-      replyText = '';
+      replyText = '不要戳我~~';
     } else if (count === 3) {
       replyText = '都說不要戳我了| ￣へ￣ |';
     } else if (count === 4) {
