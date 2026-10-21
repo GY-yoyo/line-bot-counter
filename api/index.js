@@ -72,12 +72,12 @@ async function handleEvent(event) {
   }
 
   // 2. 原有的圖文選單點擊計數功能
-  if (userMessage === '不要戳我~~') {
+  if (userMessage === '我戳~~') {
     let count = userClicks.get(userId) || 0;
     count += 1;
     userClicks.set(userId, count);
 
-    let replyText = '我戳~~';
+    let replyText = '不要戳我~~';
     if (count <= 2) {
       replyText = '';
     } else if (count === 3) {
